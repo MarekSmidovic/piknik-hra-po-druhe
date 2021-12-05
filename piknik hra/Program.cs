@@ -7,16 +7,30 @@ namespace piknik_hra
     {
 
 
-        /*tu MATEJ naplni vsetky tri stringy (lahky, stredny, tazky) slovami
-         * zatial bez kluca, tj. slov z ktorych ma skladat slova
+        /*tu MATEJ naplni vsetky tri listy (lahky, stredny, tazky) slovami
+         * kluce budu static a budu sa volat nasledovne
+         * (k listu lahky bude kluc lahkyKluc)
+         * 
+         * ten kluc moze byt v poriadku ako string a nie ako pole charov kedze mi ho v programe
+         * vobec nevyuzijeme a ani nepotrebujeme, sluzi len pre toho co to hra
+         * aby vedel z coho ma skladat
          */
         static List<string> lahky = new List<string>();
+
+        static string lahkyKluc = String.Empty;
+
 
 
         static List<string> stredny = new List<string>();
 
+        static string strednyKluc = String.Empty;
+
+
 
         static List<string> tazky = new List<string>();
+
+        static string tazkyKluc = String.Empty;
+
 
 
         static void Main(string[] args)
