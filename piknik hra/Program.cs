@@ -22,6 +22,15 @@ namespace piknik_hra
         static void Main(string[] args)
         {
 
+            /*v maine RICHARD spravi to ze ked  typek pride do programu
+             * tak zada svoje meno. Potom dostane 4 moznosti: koniec, alebo jednu z troch obtiaznosti.
+             * moznosti bude dostavat zakazdym ked sa skonci jedna moznost. 
+             * pre pochopenie: vyberie moznost lahke, typek bude hrat atd atd a ked skonci 
+             * je jedno ci vyhra alebo prehra dostane na vyber ci chce pokracovat alebo
+             * skoncit. 
+             */
+
+
             
         }
 
