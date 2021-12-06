@@ -44,6 +44,8 @@ namespace piknik_hra
              * skoncit. 
              */
 
+            //asjkbkasj
+
 
             
         }
@@ -61,5 +63,7 @@ namespace piknik_hra
             }
             return aa;
         }
+
+
     }
 }
