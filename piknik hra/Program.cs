@@ -33,37 +33,120 @@ namespace piknik_hra
 
 
 
+
         static void Main(string[] args)
         {
+            //naplnenie prveho listu
 
-            /*v maine RICHARD spravi to ze ked  typek pride do programu
-             * tak zada svoje meno. Potom dostane 4 moznosti: koniec, alebo jednu z troch obtiaznosti.
-             * moznosti bude dostavat zakazdym ked sa skonci jedna moznost. 
-             * pre pochopenie: vyberie moznost lahke, typek bude hrat atd atd a ked skonci 
-             * je jedno ci vyhra alebo prehra dostane na vyber ci chce pokracovat alebo
-             * skoncit. 
-             */
 
-            //asjkbkasj
-            //osdkfosdkfodkfo
 
-            
+
+
+
+
+            int[] cisla = { 1, 2, 3, 4, 5 };
+            int[] uhadnuteCisla = new int[5];
+            int pocetZlych = 0;
+            int pocetSpravnehoPokusu = -1;
+
+            while (true)
+            {
+                int input = int.Parse(Console.ReadLine());
+
+                if (ocekuvac(input, cisla) == true)
+                {
+                    if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
+                    {
+                        pocetSpravnehoPokusu++;
+                        uhadnuteCisla[pocetSpravnehoPokusu] = input;
+                        Console.WriteLine("spravne, pokracuj");
+
+                        if (ocekuvacVyslednehoPolaSoSpravnym(cisla, uhadnuteCisla) == true)
+                        {
+                            Console.WriteLine("splnil si ulohu!");
+                            break;
+                        }
+
+
+                    }
+                    else
+                    {
+                        Console.WriteLine("toto slovo si uz zadal!");
+                    }
+                }
+
+                else
+                {
+                    Console.WriteLine("cislo sa nenachadza");
+                    pocetZlych++;
+
+                    if (pocetZlych >= 3)
+                    {
+                        Console.WriteLine("prehral si:(");
+                        break;
+                    }
+                }
+
+            }
+
         }
 
-        //funkcia na testovanie ci je input totozny s hladanym slovom
-        static bool porovnanieInputS(string input, List<string> ks)
+        //testuje input s listom
+        static bool ocekuvac(int input, int[] cisla)
         {
-            bool aa = false;
-            for (int i = 0; i < ks.Count; i++)
+            bool jjnn = false;
+
+            for (int i = 0; i < cisla.Length; i++)
             {
-                if (input == ks[i])
+                if (input == cisla[i])
                 {
-                    aa = true;
+                    jjnn = true;
                 }
             }
-            return aa;
+            return jjnn;
+
+        }
+
+        //testuje ci hrac nezadal spravne slovo dva krat
+        static bool ocekuvacUzUhadnutych(int input, int[] uhadnuteCisla)
+        {
+            bool jjnn = false;
+
+            for (int i = 0; i < uhadnuteCisla.Length; i++)
+            {
+                if (input == uhadnuteCisla[i])
+                {
+                    jjnn = true;
+                }
+            }
+            return jjnn;
         }
 
 
+        //testuje ci su uhadnute vsetky slova
+        static bool ocekuvacVyslednehoPolaSoSpravnym(int[] cisla, int[] uhadnuteCisla)
+        {
+            int pocetSpravnych = 0;
+            for (int i = 0; i < cisla.Length; i++)
+            {
+                for (int j = 0; j < uhadnuteCisla.Length; j++)
+                {
+                    if (cisla[i] == uhadnuteCisla[j])
+                        pocetSpravnych++;
+                }
+            }
+
+            if (pocetSpravnych == 5)
+                return true;
+            else
+                return false;
+        }
+
     }
+
+
+
+
+
 }
+
