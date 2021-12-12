@@ -38,30 +38,31 @@ namespace piknik_hra
         {
             //naplnenie prveho listu
 
+            
 
-
-
-
-
-
-            int[] cisla = { 1, 2, 3, 4, 5 };
-            int[] uhadnuteCisla = new int[5];
+            lahky.Add("na");
+            lahky.Add("nez");
+            lahky.Add("neha");
+            lahky.Add("zena");
+            lahky.Add("anezka");
+            
+            List<string> uhadnuteCisla = new List<string>();
             int pocetZlych = 0;
             int pocetSpravnehoPokusu = -1;
 
             while (true)
             {
-                int input = int.Parse(Console.ReadLine());
+                string input = Console.ReadLine();
 
-                if (ocekuvac(input, cisla) == true)
+                if (ocekuvac(input, lahky) == true)
                 {
                     if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
                     {
                         pocetSpravnehoPokusu++;
-                        uhadnuteCisla[pocetSpravnehoPokusu] = input;
+                        uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
                         Console.WriteLine("spravne, pokracuj");
 
-                        if (ocekuvacVyslednehoPolaSoSpravnym(cisla, uhadnuteCisla) == true)
+                        if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
                         {
                             Console.WriteLine("splnil si ulohu!");
                             break;
@@ -77,7 +78,7 @@ namespace piknik_hra
 
                 else
                 {
-                    Console.WriteLine("cislo sa nenachadza");
+                    Console.WriteLine("slovo sa nenachadza");
                     pocetZlych++;
 
                     if (pocetZlych >= 3)
@@ -92,13 +93,13 @@ namespace piknik_hra
         }
 
         //testuje input s listom
-        static bool ocekuvac(int input, int[] cisla)
+        static bool ocekuvac(string input, List<string> lahky)
         {
             bool jjnn = false;
 
-            for (int i = 0; i < cisla.Length; i++)
+            for (int i = 0; i < lahky.Count; i++)
             {
-                if (input == cisla[i])
+                if (input == lahky[i])
                 {
                     jjnn = true;
                 }
@@ -106,13 +107,14 @@ namespace piknik_hra
             return jjnn;
 
         }
+        
 
         //testuje ci hrac nezadal spravne slovo dva krat
-        static bool ocekuvacUzUhadnutych(int input, int[] uhadnuteCisla)
+        static bool ocekuvacUzUhadnutych(string input, List<string> uhadnuteCisla)
         {
             bool jjnn = false;
 
-            for (int i = 0; i < uhadnuteCisla.Length; i++)
+            for (int i = 0; i < uhadnuteCisla.Count; i++)
             {
                 if (input == uhadnuteCisla[i])
                 {
@@ -124,14 +126,14 @@ namespace piknik_hra
 
 
         //testuje ci su uhadnute vsetky slova
-        static bool ocekuvacVyslednehoPolaSoSpravnym(int[] cisla, int[] uhadnuteCisla)
+        static bool ocekuvacVyslednehoPolaSoSpravnym(List<string> lahky, List<string> uhadnuteCisla)
         {
             int pocetSpravnych = 0;
-            for (int i = 0; i < cisla.Length; i++)
+            for (int i = 0; i < lahky.Count; i++)
             {
-                for (int j = 0; j < uhadnuteCisla.Length; j++)
+                for (int j = 0; j < uhadnuteCisla.Count; j++)
                 {
-                    if (cisla[i] == uhadnuteCisla[j])
+                    if (lahky[i] == uhadnuteCisla[j])
                         pocetSpravnych++;
                 }
             }
