@@ -37,59 +37,99 @@ namespace piknik_hra
         static void Main(string[] args)
         {
             //naplnenie prveho listu
-
-            
-
             lahky.Add("na");
             lahky.Add("nez");
             lahky.Add("neha");
             lahky.Add("zena");
             lahky.Add("anezka");
-            
+
+            //naplnenie druhe
+            stredny.Add("tak");
+            stredny.Add("kasa");
+            stredny.Add("taska");
+            stredny.Add("satka");
+            stredny.Add("saty");
+
+            //naplnenie tretirho
+            tazky.Add("rad");
+            tazky.Add("cop");
+            tazky.Add("pod");
+            tazky.Add("para");
+            tazky.Add("opar");
+            tazky.Add("poradca");
+
+
             List<string> uhadnuteCisla = new List<string>();
             int pocetZlych = 0;
             int pocetSpravnehoPokusu = -1;
 
+
             while (true)
             {
-                string input = Console.ReadLine();
-
-                if (ocekuvac(input, lahky) == true)
+                Console.WriteLine("vyber si obtaiznost (L/S/T)");
+                string vyber = Console.ReadLine();
+                while (vyber == string.Empty)                        //cekuje ci je prazdny input
                 {
-                    if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
-                    {
-                        pocetSpravnehoPokusu++;
-                        uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                        Console.WriteLine("spravne, pokracuj");
+                    Console.WriteLine("nic si nezadal");
+                    vyber = Console.ReadLine();
+                }
 
-                        if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
+                if (vyber == "L")
+                {
+                    while (true)
+                    {
+
+                        string input = Console.ReadLine();
+                        while (input == string.Empty)                        //cekuje ci je prazdny input
                         {
-                            Console.WriteLine("splnil si ulohu!");
-                            break;
+                            Console.WriteLine("nic si nezadal");
+                            input = Console.ReadLine();
                         }
 
+                        if (ocekuvac(input, lahky) == true)
+                        {
+                            if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
+                            {
+                                pocetSpravnehoPokusu++;
+                                uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
+                                Console.WriteLine("spravne, pokracuj");
 
-                    }
-                    else
-                    {
-                        Console.WriteLine("toto slovo si uz zadal!");
+                                if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
+                                {
+                                    Console.WriteLine("splnil si ulohu!");
+                                    break;
+                                }
+
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("toto slovo si uz zadal!");
+                            }
+                        }
+
+                        else
+                        {
+                            Console.WriteLine("slovo sa nenachadza");
+                            pocetZlych++;
+
+                            if (pocetZlych >= 3)
+                            {
+                                Console.WriteLine("prehral si:(");
+                                break;
+                            }
+                        }
+
                     }
                 }
 
-                else
+                else if (vyber == "S")
                 {
-                    Console.WriteLine("slovo sa nenachadza");
-                    pocetZlych++;
-
-                    if (pocetZlych >= 3)
-                    {
-                        Console.WriteLine("prehral si:(");
-                        break;
-                    }
+                    Console.WriteLine("");
                 }
-
+                else
+                    break;
             }
-
         }
 
         //testuje input s listom
