@@ -59,7 +59,7 @@ namespace piknik_hra
             tazky.Add("poradca");
 
 
-            List<string> uhadnuteCisla = new List<string>();
+            List<string> uhadnuteCisla = new List<string>();    //list na uhadnute slova
             int pocetZlych = 0;
             int pocetSpravnehoPokusu = -1;
 
@@ -121,14 +121,69 @@ namespace piknik_hra
                         }
 
                     }
-                }
 
-                else if (vyber == "S")
-                {
-                    Console.WriteLine("");
+
+
+                    //toto je stredna obtiaznost
+                    if (vyber == "S")
+                    {
+                        while (true)
+                        {
+
+                            string input = Console.ReadLine();
+                            while (input == string.Empty)                        //cekuje ci je prazdny input
+                            {
+                                Console.WriteLine("nic si nezadal");
+                                input = Console.ReadLine();
+                            }
+
+                            if (ocekuvacStredny(input, stredny) == true)
+                            {
+                                if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
+                                {
+                                    pocetSpravnehoPokusu++;
+                                    uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
+                                    Console.WriteLine("spravne, pokracuj");
+
+                                    if (ocekuvacVyslednehoPolaSoSpravnymStredny(stredny, uhadnuteCisla) == true)
+                                    {
+                                        Console.WriteLine("splnil si ulohu!");
+                                        break;
+                                    }
+
+
+                                }
+                                else
+                                {
+                                    Console.WriteLine("toto slovo si uz zadal!");
+                                }
+                            }
+
+                            else
+                            {
+                                Console.WriteLine("slovo sa nenachadza");
+                                pocetZlych++;
+
+                                if (pocetZlych >= 3)
+                                {
+                                    Console.WriteLine("prehral si:(");
+                                    break;
+                                }
+                            }
+
+                        }
+                    }
+
+
+
+
+                    else if (vyber == "M")
+                    {
+                        Console.WriteLine("");
+                    }
+                    else
+                        break;
                 }
-                else
-                    break;
             }
         }
 
@@ -147,7 +202,23 @@ namespace piknik_hra
             return jjnn;
 
         }
-        
+
+        //testuje input s listom STREDNA OBTIAZNOST
+        static bool ocekuvacStredny(string input, List<string> stredny)
+        {
+            bool jjnn = false;
+
+            for (int i = 0; i < stredny.Count; i++)
+            {
+                if (input == stredny[i])
+                {
+                    jjnn = true;
+                }
+            }
+            return jjnn;
+
+        }
+
 
         //testuje ci hrac nezadal spravne slovo dva krat
         static bool ocekuvacUzUhadnutych(string input, List<string> uhadnuteCisla)
@@ -164,6 +235,7 @@ namespace piknik_hra
             return jjnn;
         }
 
+        
 
         //testuje ci su uhadnute vsetky slova
         static bool ocekuvacVyslednehoPolaSoSpravnym(List<string> lahky, List<string> uhadnuteCisla)
@@ -174,6 +246,26 @@ namespace piknik_hra
                 for (int j = 0; j < uhadnuteCisla.Count; j++)
                 {
                     if (lahky[i] == uhadnuteCisla[j])
+                        pocetSpravnych++;
+                }
+            }
+
+            if (pocetSpravnych == 5)
+                return true;
+            else
+                return false;
+        }
+
+
+        //testuje su uhadnute vsetky slova STREDNA OBTIAZNOST
+        static bool ocekuvacVyslednehoPolaSoSpravnymStredny(List<string> stredny, List<string> uhadnuteCisla)
+        {
+            int pocetSpravnych = 0;
+            for (int i = 0; i < stredny.Count; i++)
+            {
+                for (int j = 0; j < uhadnuteCisla.Count; j++)
+                {
+                    if (stredny[i] == uhadnuteCisla[j])
                         pocetSpravnych++;
                 }
             }
