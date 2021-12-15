@@ -6,15 +6,6 @@ namespace piknik_hra
     class Program
     {
 
-
-        /*tu MATEJ naplni vsetky tri listy (lahky, stredny, tazky) slovami
-         * kluce budu static a budu sa volat nasledovne
-         * (k listu lahky bude kluc lahkyKluc)
-         * 
-         * ten kluc moze byt v poriadku ako string a nie ako pole charov kedze mi ho v programe
-         * vobec nevyuzijeme a ani nepotrebujeme, sluzi len pre toho co to hra
-         * aby vedel z coho ma skladat
-         */
         static List<string> lahky = new List<string>();
 
         static string lahkyKluc = String.Empty;
@@ -32,8 +23,6 @@ namespace piknik_hra
         static string tazkyKluc = String.Empty;
 
 
-
-
         static void Main(string[] args)
         {
             //naplnenie prveho listu
@@ -42,6 +31,7 @@ namespace piknik_hra
             lahky.Add("neha");
             lahky.Add("zena");
             lahky.Add("anezka");
+            lahkyKluc = "N,A,E,Ž,H,K,A";
 
             //naplnenie druhe
             stredny.Add("tak");
@@ -49,26 +39,28 @@ namespace piknik_hra
             stredny.Add("taska");
             stredny.Add("satka");
             stredny.Add("saty");
+            strednyKluc = "T,A,K,Š,Y";
 
-            //naplnenie tretirho
+            //naplnenie tretirho      //matej musi upravit
             tazky.Add("rad");
             tazky.Add("cop");
             tazky.Add("pod");
             tazky.Add("para");
             tazky.Add("opar");
             tazky.Add("poradca");
+            tazkyKluc = "R,D,C,A";
 
 
             List<string> uhadnuteCisla = new List<string>();    //list na uhadnute slova
             int pocetZlych = 0;
-            int pocetSpravnehoPokusu = -1;
+            int pocetSpravnehoPokusu;
 
 
             while (true)
             {
                 Console.WriteLine("vyber si obtaiznost (L/S/T)");
                 string vyber = Console.ReadLine();
-                while (vyber == string.Empty)                        //cekuje ci je prazdny input
+                while (vyber == string.Empty)  //cekuje ci je prazdny input
                 {
                     Console.WriteLine("nic si nezadal");
                     vyber = Console.ReadLine();
@@ -76,11 +68,14 @@ namespace piknik_hra
 
                 if (vyber == "L")
                 {
+                    pocetSpravnehoPokusu = -1;
+                    Console.WriteLine("vybral si si lahku obtiaznost");
+                    Console.WriteLine("Pismena z ktorych skladas: " + lahkyKluc + "\n");
                     while (true)
                     {
-
+                        Console.Write("tvoja odpoved: ");
                         string input = Console.ReadLine();
-                        while (input == string.Empty)                        //cekuje ci je prazdny input
+                        while (input == string.Empty) //cekuje ci je prazdny input
                         {
                             Console.WriteLine("nic si nezadal");
                             input = Console.ReadLine();
@@ -92,20 +87,19 @@ namespace piknik_hra
                             {
                                 pocetSpravnehoPokusu++;
                                 uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                                Console.WriteLine("spravne, pokracuj");
+                                if(pocetSpravnehoPokusu < 4)
+                                   Console.WriteLine("spravne, pokracuj");
 
                                 if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
-                                {
-                                    Console.WriteLine("splnil si ulohu!");
+                                {                                    
+                                    Console.WriteLine("splnil si ulohu! \n");
+                                    vymazanieTestovaciehoListu(uhadnuteCisla);
                                     break;
                                 }
-
-
                             }
                             else
-                            {
                                 Console.WriteLine("toto slovo si uz zadal!");
-                            }
+
                         }
 
                         else
@@ -116,73 +110,72 @@ namespace piknik_hra
                             if (pocetZlych >= 3)
                             {
                                 Console.WriteLine("prehral si:(");
+                                vymazanieTestovaciehoListu(uhadnuteCisla);
                                 break;
                             }
                         }
 
                     }
 
+                }
 
 
-                    //toto je stredna obtiaznost
-                    if (vyber == "S")
+                //toto je stredna obtiaznost
+                if (vyber == "S")
+                {
+                    pocetSpravnehoPokusu = -1;
+                    Console.WriteLine("vybral si si strednu obtiaznost");
+                    Console.WriteLine("Pismena z ktorych skladas: " + strednyKluc + "\n");
+                    while (true)
                     {
-                        while (true)
+                        Console.Write("tvoja odpoved: ");
+                        string input = Console.ReadLine();
+                        while (input == string.Empty)   //cekuje ci je prazdny input
                         {
+                            Console.WriteLine("nic si nezadal");
+                            input = Console.ReadLine();
+                        }
 
-                            string input = Console.ReadLine();
-                            while (input == string.Empty)                        //cekuje ci je prazdny input
+                        if (ocekuvac(input, stredny) == true)
+                        {
+                            if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
                             {
-                                Console.WriteLine("nic si nezadal");
-                                input = Console.ReadLine();
-                            }
+                                pocetSpravnehoPokusu++;
+                                uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
+                                if(pocetSpravnehoPokusu < 4)
+                                Console.WriteLine("spravne, pokracuj");
 
-                            if (ocekuvacStredny(input, stredny) == true)
-                            {
-                                if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
+                                if (ocekuvacVyslednehoPolaSoSpravnym(stredny, uhadnuteCisla) == true)
                                 {
-                                    pocetSpravnehoPokusu++;
-                                    uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                                    Console.WriteLine("spravne, pokracuj");
-
-                                    if (ocekuvacVyslednehoPolaSoSpravnymStredny(stredny, uhadnuteCisla) == true)
-                                    {
-                                        Console.WriteLine("splnil si ulohu!");
-                                        break;
-                                    }
-
-
-                                }
-                                else
-                                {
-                                    Console.WriteLine("toto slovo si uz zadal!");
-                                }
-                            }
-
-                            else
-                            {
-                                Console.WriteLine("slovo sa nenachadza");
-                                pocetZlych++;
-
-                                if (pocetZlych >= 3)
-                                {
-                                    Console.WriteLine("prehral si:(");
+                                    Console.WriteLine("splnil si ulohu! \n");
+                                    vymazanieTestovaciehoListu(uhadnuteCisla);
                                     break;
                                 }
                             }
-
+                            else
+                                Console.WriteLine("toto slovo si uz zadal!");
+                        
                         }
+
+                        else
+                        {
+                            Console.WriteLine("slovo sa nenachadza");
+                            pocetZlych++;
+
+                            if (pocetZlych >= 3)
+                            {
+                                Console.WriteLine("prehral si:(");
+                                vymazanieTestovaciehoListu(uhadnuteCisla);
+                                break;
+                            }
+                        }
+
                     }
+                }
 
-
-
-
-                    else if (vyber == "M")
-                    {
-                        Console.WriteLine("");
-                    }
-                    else
-                        break;
+                else if (vyber == "M")
+                {
+                    Console.WriteLine("");
                 }
             }
         }
@@ -202,23 +195,6 @@ namespace piknik_hra
             return jjnn;
 
         }
-
-        //testuje input s listom STREDNA OBTIAZNOST
-        static bool ocekuvacStredny(string input, List<string> stredny)
-        {
-            bool jjnn = false;
-
-            for (int i = 0; i < stredny.Count; i++)
-            {
-                if (input == stredny[i])
-                {
-                    jjnn = true;
-                }
-            }
-            return jjnn;
-
-        }
-
 
         //testuje ci hrac nezadal spravne slovo dva krat
         static bool ocekuvacUzUhadnutych(string input, List<string> uhadnuteCisla)
@@ -256,26 +232,14 @@ namespace piknik_hra
                 return false;
         }
 
-
-        //testuje su uhadnute vsetky slova STREDNA OBTIAZNOST
-        static bool ocekuvacVyslednehoPolaSoSpravnymStredny(List<string> stredny, List<string> uhadnuteCisla)
+        //vymazanie listu po skonceni
+        static void vymazanieTestovaciehoListu(List<string> list)
         {
-            int pocetSpravnych = 0;
-            for (int i = 0; i < stredny.Count; i++)
+            for (int i = 0; i <= 4; i++)
             {
-                for (int j = 0; j < uhadnuteCisla.Count; j++)
-                {
-                    if (stredny[i] == uhadnuteCisla[j])
-                        pocetSpravnych++;
-                }
+                list.RemoveAt(0);
             }
-
-            if (pocetSpravnych == 5)
-                return true;
-            else
-                return false;
         }
-
     }
 
 
