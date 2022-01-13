@@ -6,24 +6,13 @@ namespace ConsoleApp12
     class Program
     {
         static List<string> lahky = new List<string>();
-
         static string lahkyKluc = String.Empty;
-
-
-
         static List<string> stredny = new List<string>();
-
         static string strednyKluc = String.Empty;
-
-
-
         static List<string> tazky = new List<string>();
-
         static string tazkyKluc = String.Empty;
-
-
-
-
+        static List<string> codeList = new List<string>();
+        static string codeKluc = String.Empty;
 
         static void Main(string[] args)
         {
@@ -43,7 +32,7 @@ namespace ConsoleApp12
             stredny.Add("šaty");
             strednyKluc = "T,K,A,Y,Š";
 
-            //naplnenie tretirho      //matej musi upravit
+            //naplnenie tretirho    
             tazky.Add("rad");
             tazky.Add("pod");
             tazky.Add("para");
@@ -53,23 +42,20 @@ namespace ConsoleApp12
 
 
 
-
             List<string> uhadnuteCisla = new List<string>();    //list na uhadnute slova
+            List<string> codeList = new List<string>();
             int pocetZlych = 0;
             int pocetSpravnehoPokusu;
-            int skoreLahkaObtiaznost = 0;
-            int skoreStrednaObtiaznost = 0;
-            int skoreTazkaObtiaznost = 0;
-
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("              >>>>> PIKNIK HRA SPŠIT EDITION <<<<<");
-            Console.ForegroundColor = ConsoleColor.DarkYellow;
-            Console.WriteLine("Vítaj v našej hre!!!" + "\n" + "Pre začiatok hry si vyber z následujúcich obtiažností");
-
+            
             while (true)
             {
-                Console.ForegroundColor = ConsoleColor.White;
-                Console.WriteLine("           Ľahkú obtiažnosť spusti zadaním klávesy L" + "\n" + "           Strednú obtiažnosť spusti zadaním klávesy S" + "\n" + "           Ťažkú obtiažnosť spusti zadaním klávesy T" + "\n");
+                pocetSpravnehoPokusu = -1;
+
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.WriteLine("          >>>>> PIKNIK HRA SPŠIT EDITION <<<<<");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("Vitaj v našej hre!!!" + "\n" + "Pre hrenie hry si vyber z následujúcich obtiažností");
+
 
                 string vyber = Console.ReadLine();
                 while (vyber == string.Empty)  //cekuje ci je prazdny input
@@ -81,234 +67,95 @@ namespace ConsoleApp12
 
                 if (vyber == "L")
                 {
-                    pocetSpravnehoPokusu = -1;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("ĽAHKÁ" + "\n");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("Slová skladaj z následujúcich písmen >>> ");
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write(lahkyKluc + "\n" + "\n");
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("Tvoje skóre: 0/5" + "\n");
-                    while (true)
-                    {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write("Tvoja odpoveď: ");
-                        string input = Console.ReadLine();
-                        while (input == string.Empty) //cekuje ci je prazdny input
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("nic si nezadal");
-                            input = Console.ReadLine();
-                        }
-
-                        if (ocekuvac(input, lahky) == true)
-                        {
-                            if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
-                            {
-                                pocetSpravnehoPokusu++;
-                                uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                                if (pocetSpravnehoPokusu < 4)
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Správne, pokračuj ;)" + "\n");
-                                skoreLahkaObtiaznost++;
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine("Tvoje skóre: " + skoreLahkaObtiaznost + "/5");
-
-
-                                if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    Console.WriteLine("Splnil si úlohu! \n");
-                                    vymazanieTestovaciehoListu(uhadnuteCisla);
-                                    break;
-                                }
-                            }
-                            else
-
-                                Console.WriteLine("\n" + "Toto slovo si už zadal!" + "\n");
-
-                        }
-
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Slovo sa nenachádza, skus znova!");
-                            pocetZlych++;
-
-                            if (pocetZlych >= 3)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("Prehral si :(... ");
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                Console.Write("\n" + "Skús znova!!!" + "\n" + "\n");
-                                vymazanieTestovaciehoListu(uhadnuteCisla);
-
-                                break;
-                            }
-                        }
-
-                    }
-
+                    prepisListov(lahky, codeList);
+                    codeKluc = lahkyKluc;
                 }
-
-
-                //toto je stredna obtiaznost
-                if (vyber == "S")
+                else if (vyber == "S")
                 {
-                    pocetSpravnehoPokusu = -1;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("STREDNÁ" + "\n");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("Slová skladaj z následujúcich písmen >>> ");
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write(strednyKluc + "\n" + "\n");
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("Tvoje skóre: 0/5" + "\n");
-                    while (true)
+                    prepisListov(stredny, codeList);
+                    codeKluc = strednyKluc;
+                }
+                else if (vyber == "T")
+                {
+                    prepisListov(tazky, codeList);
+                    codeKluc = tazkyKluc;
+                }
+                else if (vyber == "K")
+                {
+                    Console.WriteLine("Pre potvrdenie stlac ENTER");
+                    string enterInput = Console.ReadLine();
+                    if (enterInput == String.Empty)
                     {
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.Write("Tvoja odpoveď: ");
-                        string input = Console.ReadLine();
-                        while (input == string.Empty)   //cekuje ci je prazdny input
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Nič si nezadal");
-                            input = Console.ReadLine();
-                        }
-
-                        if (ocekuvac(input, stredny) == true)
-                        {
-                            if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
-                            {
-                                pocetSpravnehoPokusu++;
-                                uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                                if (pocetSpravnehoPokusu < 4)
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                Console.WriteLine("Správne, pokračuj ;)" + "\n");
-                                skoreStrednaObtiaznost++;
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine("Tvoje skóre: " + skoreStrednaObtiaznost + "/5");
-
-                                if (ocekuvacVyslednehoPolaSoSpravnym(stredny, uhadnuteCisla) == true)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    Console.WriteLine("Splnil si úlohu! \n");
-                                    vymazanieTestovaciehoListu(uhadnuteCisla);
-                                    break;
-                                }
-                            }
-                            else
-
-                                Console.WriteLine("\n" + "Toto slovo si už zadal!" + "\n");
-
-                        }
-
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Slovo sa nenachádza, skús znova!");
-                            pocetZlych++;
-
-                            if (pocetZlych >= 3)
-                            {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("Prehral si :(... ");
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                Console.Write("Skús znova!!!" + "\n" + "\n");
-                                vymazanieTestovaciehoListu(uhadnuteCisla);
-                                break;
-                            }
-                        }
-
+                        break;
                     }
                 }
 
-                if (vyber == "T")
+                Console.Write("Slová skladaj z následujúcich písmen >>> ");
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.Write(codeKluc + "\n" + "\n");
+
+                while (true)
                 {
-                    pocetSpravnehoPokusu = -1;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write("ŤAŽKÁ" + "\n");
                     Console.ForegroundColor = ConsoleColor.White;
-                    Console.Write("Slová skladaj z následujúcich písmen >>> ");
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.Write(tazkyKluc + "\n" + "\n");
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine("Tvoje skóre: 0/5" + "\n");
-                    while (true)
+                    Console.Write("Tvoja odpoveď: ");
+                    string input = Console.ReadLine();
+                    while (input == string.Empty) //cekuje ci je prazdny input
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("nic si nezadal");
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.Write("Tvoja odpoveď: ");
-                        string input = Console.ReadLine();
-                        while (input == string.Empty) //cekuje ci je prazdny input
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("nic si nezadal");
-                            input = Console.ReadLine();
-                        }
+                        input = Console.ReadLine();
+                    }
 
-                        if (ocekuvac(input, lahky) == true)
+                    if (ocekuvac(input, codeList) == true)
+                    {
+                        if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
                         {
-                            if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
+                            pocetSpravnehoPokusu++;
+                            uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
+                            if (pocetSpravnehoPokusu < 4)
                             {
-                                pocetSpravnehoPokusu++;
-                                uhadnuteCisla.Insert(pocetSpravnehoPokusu, input);
-                                if (pocetSpravnehoPokusu < 4)
-                                    Console.ForegroundColor = ConsoleColor.Green;
+                                Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Správne, pokračuj ;)" + "\n");
-                                skoreTazkaObtiaznost++;
-                                Console.ForegroundColor = ConsoleColor.DarkGreen;
-                                Console.WriteLine("Tvoje skóre: " + skoreTazkaObtiaznost + "/5");
-
-
-                                if (ocekuvacVyslednehoPolaSoSpravnym(lahky, uhadnuteCisla) == true)
-                                {
-                                    Console.ForegroundColor = ConsoleColor.Green;
-                                    Console.WriteLine("Splnil si úlohu! \n");
-                                    vymazanieTestovaciehoListu(uhadnuteCisla);
-                                    break;
-                                }
                             }
-                            else
+                            
 
-                                Console.WriteLine("\n" + "Toto slovo si už zadal!" + "\n");
-
-                        }
-
-                        else
-                        {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Slovo sa nenachádza, skús znova!");
-                            pocetZlych++;
-
-                            if (pocetZlych >= 3)
+                            if (ocekuvacVyslednehoPolaSoSpravnym(codeList, uhadnuteCisla) == true)
                             {
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.Write("Prehral si :(... ");
-                                Console.ForegroundColor = ConsoleColor.DarkYellow;
-                                Console.Write("\n" + "Skús znova!!!" + "\n" + "\n");
+                                Console.ForegroundColor = ConsoleColor.Green;
+                                Console.WriteLine("Splnil si úlohu! Stlač ENTER  \n");
                                 vymazanieTestovaciehoListu(uhadnuteCisla);
-
+                                Console.ReadLine();
+                                Console.Clear();
                                 break;
                             }
                         }
-
+                        else
+                            Console.WriteLine("\n" + "Toto slovo si už zadal!" + "\n");
                     }
 
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Slovo sa nenachádza, skus znova!");
+                        pocetZlych++;
+
+                        if (pocetZlych >= 3)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.Write("Prehral si :(... ");
+                            Console.ForegroundColor = ConsoleColor.DarkYellow;
+                            Console.Write("\n" + "Stlač ENTER" + "\n" + "\n");
+                            if (uhadnuteCisla.Count != 0)
+                                vymazanieTestovaciehoListu(uhadnuteCisla);
+                            Console.ReadLine();
+                            Console.Clear();
+                            break;
+                        }
+                    }
                 }
 
-
-
-                else if (vyber == "M")
-                {
-                    Console.WriteLine("");
-                }
             }
         }
 
@@ -370,6 +217,14 @@ namespace ConsoleApp12
             for (int i = 0; i <= 4; i++)
             {
                 list.RemoveAt(0);
+            }
+        }
+        //prepisanie true listu do code listu
+        static void prepisListov(List<string> trueList, List<string> codeList)
+        {
+            for (int i = 0; i < trueList.Count; i++)
+            {
+                codeList.Add(trueList[i]);
             }
         }
     }
