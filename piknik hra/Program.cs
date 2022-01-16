@@ -1,82 +1,91 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 namespace ConsoleApp12
 {
     class Program
     {
-        static List<string> lahky = new List<string>();
-        static string lahkyKluc = String.Empty;
-        static List<string> stredny = new List<string>();
-        static string strednyKluc = String.Empty;
-        static List<string> tazky = new List<string>();
-        static string tazkyKluc = String.Empty;
-        static List<string> codeList = new List<string>();
-        static string codeKluc = String.Empty;
-
         static void Main(string[] args)
         {
-            //naplnenie prveho listu
-            lahky.Add("na");
-            lahky.Add("než");
-            lahky.Add("neha");
-            lahky.Add("žena");
-            lahky.Add("anežka");
-            lahkyKluc = "N,A,E,Ž,H,K,A";
+            string filePath1 = @"E:\piknikHra\lahkaObtiaznost.txt";
+            List<string> lahky = File.ReadAllLines(filePath1).ToList();
+            string lahkyKluc = "K,E,Y,D,D,O,R,V";
 
-            //naplnenie druhe
-            stredny.Add("tak");
-            stredny.Add("kaša");
-            stredny.Add("taška");
-            stredny.Add("šatka");
-            stredny.Add("šaty");
-            strednyKluc = "T,K,A,Y,Š";
+            string filePath2 = @"E:\piknikHra\strednaObtiaznost.txt";
+            List<string> stredny = File.ReadAllLines(filePath2).ToList();
+            string strednyKluc = "T,K,A,Y,Š";
 
-            //naplnenie tretirho    
-            tazky.Add("rad");
-            tazky.Add("pod");
-            tazky.Add("para");
-            tazky.Add("opar");
-            tazky.Add("poradca");
-            tazkyKluc = "R,D,C,A,P,O";
+            string filePath3 = @"E:\piknikHra\tazkaObtiaznost.txt";
+            List<string> tazky = File.ReadAllLines(filePath3).ToList();
+            string tazkyKluc = "N,O,E,S,B,P,R";
 
-
+            List<string> codeList = new List<string>();
+            string codeKluc = String.Empty;
 
             List<string> uhadnuteCisla = new List<string>();    //list na uhadnute slova
-            List<string> codeList = new List<string>();
             int pocetZlych = 0;
-            int pocetSpravnehoPokusu;
-            
+
+
             while (true)
             {
-                pocetSpravnehoPokusu = -1;
+                int pocetSpravnehoPokusu = -1;
 
+                string nadpis = ">>>PIKNIK HRA<<<";
+                Console.SetCursorPosition((Console.WindowWidth - nadpis.Length) / 2, Console.CursorTop);
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.WriteLine("          >>>>> PIKNIK HRA SPŠIT EDITION <<<<<");
+                Console.WriteLine(nadpis, "\n");
+                Console.WriteLine(""); Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
-                Console.WriteLine("Vitaj v našej hre!!!" + "\n" + "Pre hrenie hry si vyber z následujúcich obtiažností");
+                Console.WriteLine("Pre vrátenie sa k výberu možností napíš: back");
+                Console.WriteLine("Pre ukončenie hry stlač klávesu: K \n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Ľahkú obtiažnosť spusti zadaním klávesy L");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Strednú obtiažnosť spusti zadaním klávesy S");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("Ťažkú obtiažnosť spusti zadaním klávesy T" + "\n");
+                Console.ForegroundColor = ConsoleColor.White;
 
-
+                Console.Write("Tvoj výber: ");
                 string vyber = Console.ReadLine();
                 while (vyber == string.Empty)  //cekuje ci je prazdny input
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("nic si nezadal");
+                    Console.WriteLine("Nič si nezadal");
                     vyber = Console.ReadLine();
                 }
 
                 if (vyber == "L")
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("ĽAHKÁ" + "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     prepisListov(lahky, codeList);
                     codeKluc = lahkyKluc;
                 }
                 else if (vyber == "S")
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("STREDNÁ" + "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
                     prepisListov(stredny, codeList);
                     codeKluc = strednyKluc;
                 }
                 else if (vyber == "T")
                 {
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write("Obtiažnosť, ktorú si zvolil >>> ");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.Write("ŤAŽKÁ" + "\n");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    prepisListov(tazky, codeList);
+                    codeKluc = tazkyKluc;
                     prepisListov(tazky, codeList);
                     codeKluc = tazkyKluc;
                 }
@@ -89,6 +98,7 @@ namespace ConsoleApp12
                         break;
                     }
                 }
+
 
                 Console.Write("Slová skladaj z následujúcich písmen >>> ");
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
@@ -108,6 +118,12 @@ namespace ConsoleApp12
                         input = Console.ReadLine();
                     }
 
+                    if (input == "back")
+                    {
+                        Console.Clear();
+                        break;
+                    }
+
                     if (ocekuvac(input, codeList) == true)
                     {
                         if (ocekuvacUzUhadnutych(input, uhadnuteCisla) == false)
@@ -119,17 +135,18 @@ namespace ConsoleApp12
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Správne, pokračuj ;)" + "\n");
                             }
-                            
-
-                            if (ocekuvacVyslednehoPolaSoSpravnym(codeList, uhadnuteCisla) == true)
+                            else
                             {
                                 Console.ForegroundColor = ConsoleColor.Green;
                                 Console.WriteLine("Splnil si úlohu! Stlač ENTER  \n");
-                                vymazanieTestovaciehoListu(uhadnuteCisla);
+                                pocetSpravnehoPokusu = -1;
+                                vymazanieListu(uhadnuteCisla);
+                                vymazanieListu(codeList);
                                 Console.ReadLine();
                                 Console.Clear();
                                 break;
                             }
+
                         }
                         else
                             Console.WriteLine("\n" + "Toto slovo si už zadal!" + "\n");
@@ -145,10 +162,12 @@ namespace ConsoleApp12
                         {
                             Console.ForegroundColor = ConsoleColor.Red;
                             Console.Write("Prehral si :(... ");
+                            pocetZlych = 0;
                             Console.ForegroundColor = ConsoleColor.DarkYellow;
                             Console.Write("\n" + "Stlač ENTER" + "\n" + "\n");
+                            vymazanieListu(codeList);
                             if (uhadnuteCisla.Count != 0)
-                                vymazanieTestovaciehoListu(uhadnuteCisla);
+                                vymazanieListu(uhadnuteCisla);
                             Console.ReadLine();
                             Console.Clear();
                             break;
@@ -212,13 +231,14 @@ namespace ConsoleApp12
         }
 
         //vymazanie listu po skonceni
-        static void vymazanieTestovaciehoListu(List<string> list)
+        static void vymazanieListu(List<string> list)
         {
-            for (int i = 0; i <= 4; i++)
+            for (int i = list.Count - 1; i >= 0; i--)
             {
-                list.RemoveAt(0);
+                list.RemoveAt(i);
             }
         }
+
         //prepisanie true listu do code listu
         static void prepisListov(List<string> trueList, List<string> codeList)
         {
